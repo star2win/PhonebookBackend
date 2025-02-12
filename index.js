@@ -31,6 +31,29 @@ app.get('/api/persons', (request, response) => {
     response.json(phonebook)
     })
 
+app.get('/info', (request, response) => {
+    
+    const now = new Date()
+
+    // Change timezone to Europe/Helsinki
+    const eetTimeHelsinki = now.toLocaleString('en-US', {
+    timeZone: 'Europe/Helsinki',
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZoneName: 'long',
+    hour12: false,
+    })
+    
+    infoResponse = `Phonebook has info for ${phonebook.length} people 
+        <br/><br/>${eetTimeHelsinki}`
+    response.send(infoResponse)
+    })
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
