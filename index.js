@@ -75,9 +75,17 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
 
+    
     randomId = Math.floor(Math.random() * 99999) + 1
 
-    if (request.body.name) {
+    if (request.body.name && request.body.number) {
+
+        if (phonebook.find(p => p.name === request.body.name)) {
+            return response.status(400).json({
+                error: 'name must be unique'
+            })
+        }
+
         personEntry = {
             id: randomId,
             name: request.body.name,
@@ -86,9 +94,10 @@ app.post('/api/persons', (request, response) => {
         console.log("Person added: ", personEntry)
         phonebook = phonebook.concat(personEntry)
         response.status(204).end()
-    } else {
+
+    } else if (!request.body.name || !request.body.number) {
         return response.status(400).json({
-            error: 'name missing'
+            error: 'name or number is missing'
           })
     }
 })
